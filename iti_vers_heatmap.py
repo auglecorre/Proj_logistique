@@ -33,15 +33,12 @@ def fusion(t1,t2):
                 else:
                     return [t2[0]] + fusion(t1,t2[1:])
 
-
 def tri_fusion(T):
     if len(T)<=1:
         return T
     else:
         c = len(T)//2
     return fusion(tri_fusion(T[0:c]),tri_fusion(T[c:]))
-
-
 
 def tri_insertion(liste):
     L = list(liste) # copie de la liste
@@ -55,9 +52,7 @@ def tri_insertion(liste):
         L[j+1] = cle
     return L
 
-
-
-def change(way, dmax, dmin, h): #dmax c'est la distance maximale autorisée entre deux points : si est dépassé, on en crée de nouveaux. dmin c'est l'inverse : on détruit un point. h c'est la distance optimale, entre les deux.   
+def change(way, dmax, dmin, h): #dmax distance max autorisée entre deux points : si dépassée, on en crée de nouveaux. dmin c'est l'inverse : on détruit un point. h distance optimale entre les deux.   
     N = len(way)
     c = 0 #C'est l'indice courant, on se déplace le long du chemin.
     while c+1 != N: 
@@ -76,11 +71,8 @@ def change(way, dmax, dmin, h): #dmax c'est la distance maximale autorisée entr
         N = len(way)
     return way 
 
-
 def dist(u,v):
     return ((v[0]-u[0])**2 + (u[1]-v[1])**2)**0.5
-
-
 
 class division : 
     def __init__(self, coordinates, traffic) : 
@@ -106,14 +98,10 @@ class division :
             color = orange 
         else : 
             color = red
-            
-            
+                    
         rectangle = folium.Rectangle(bounds, stroke = True, color = color, fill = False, fillopacity = 100, fillcolor = color, weight = 7)
         rectangle.add_to(map)
         
-
-
-
 class grid : 
     def __init__(self, coordinates, N): 
         Y0, X0 = coordinates[0]
@@ -139,9 +127,6 @@ class grid :
         self.matrix = matrix 
         self.cases_avec_traffic = []
     
-
-
-
     def draw(self, map):
         matrix = self.matrix 
         N = self.N
@@ -150,9 +135,6 @@ class grid :
                 div = matrix[i][j]
                 div.draw(map)
                 
-
-
-
     def traffic_grow(self, itineraire, h): #h c'est l'aire d'influence d'un point, on a une décroissance linéaire du centre du point jusq'à la distance .  
         coorgrid = self.coordinates
         Y0, X0 = coorgrid[0]
@@ -175,7 +157,6 @@ class grid :
             if i >= 0 and i < N and j >= 0 and j < N: 
                 self.matrix[i][j].traffic += 1 #on colorie déjà la case au centre 
             
-
             #Avoir le rayon du cercle de changement de couleur 
             #cases à tester vers la droite
             count_y = 0
@@ -206,7 +187,6 @@ class grid :
                             if d <= h :
                                 self.matrix[i][j].traffic += 1 - d/h
         
-
     def normalisation_traffic(self): 
         for i in range(len(self.matrix)): 
             for j in range(len(self.matrix)): 
@@ -232,12 +212,10 @@ class grid :
             c += 1
         print('Le traffic est désormais normalisé')
 
-
-
 def heatmap(itinaries, boundaries, N, h): 
-    # itinaries ce sont tous les itineraires que l'on a eu à partir de vrpy
-    # boundaries c'est les coordonnées des deux extrémaux du carré qui définit l'espace dans lequel on trace la heatmap et sont contenus les itinéraires
-    # N c'est la taille de la grille finale que l'on souhaite 
+    # itinaries : itineraires eus à partir de vrpy
+    # boundaries : coordonnées des deux extrémaux du carré qui définit l'espace dans lequel on trace la heatmap et sont contenus les itinéraires
+    # N : taille de la grille finale voulue
     
     N_iti = len(itinaries)
     k = 0 #c'est l'indice courant pour savoir combien d'itinéraire on a déjà fait l'actualisation du traffic 
