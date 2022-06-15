@@ -92,16 +92,16 @@ def construction_matrices(nodes):
     liste_itineraires = []
 
     i = 0 
-    for node_start in nodes : 
+    for node_start in nodes :
         liste_itineraires.append([])
         start_x = nodes[node_start][1] 
         start_y = nodes[node_start][0]
-        print('i = ', i)
+        print(f'i = {i}')
         j = 0
         for node_end in nodes :
             end_x = nodes[node_end][1] 
             end_y = nodes[node_end][0]
-            texte = requests.get("https://wxs.ign.fr/essentiels/geoportail/itineraire/rest/1.0.0/route?resource=bdtopo-osrm&start=" + str(start_x) + "," + str(start_y) + "&end=" + str(end_x) + "," + str(end_y) + "&timeUnit=second")
+            texte = requests.get("https://wxs.ign.fr/essentiels/geoportail/itineraire/rest/1.0.0/route?resource=bdtopo-osrm&start=" + f'{str(start_x)},{str(start_y)}&end={str(end_x)},{str(end_y)}&timeUnit=second')
             texte = json.loads(texte.text)
             itineraire = texte['geometry']['coordinates']
             duration = texte['duration']
@@ -113,14 +113,12 @@ def construction_matrices(nodes):
                     element[1] = p 
             itineraire_points = change(itineraire,  0.00025, 0.0002, 0.000225)
 
-            #il va maintenant falloir modifier cela en une liste de noeud. 
+            #il va maintenant falloir modifier cela en liste de noeuds. 
             itineraire_noeuds = []
-            node_courant = "-1"
-            for point in itineraire_points:
-                for node in nodes  : 
-                    if node != node_courant and dist(point, nodes[node]) <= 0.00045 : 
+            for point in itineraire_points :
+                for node in nodes : 
+                    if node not in itineraire_noeuds and dist(point, nodes[node]) <= 0.00045 : 
                         itineraire_noeuds.append(node)
-                        node_courant = node
             liste_itineraires[i].append(itineraire_noeuds)  #Donc liste_itineraires[i][j] c'est l'itineraire pour aller de i vers j en parlant en noeud. 
             j+=1
         i+=1 

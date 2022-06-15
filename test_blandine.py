@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 class Lego :
 
     def __init__(self, taille, couleur):
@@ -24,3 +26,8 @@ print(Lego(4, 'bleue').modèle)
  6: ['Source', '34', '33', 'Sink'],
  7: ['Source', '40', '32', 'Sink'],
  8: ['Source', '8', '30', '5', 'Sink']}
+
+
+mat = [[i+j for i in range(100)] for j in range(100)]
+plt.plot(mat)
+plt.show()
